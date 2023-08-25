@@ -2,34 +2,27 @@ import React from 'react';
 import { FormTitle, FormContact, FormButton } from './ContactForm.Styled';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContactsItems, addContact } from 'redux/taskSlice';
-import { useEffect } from 'react';
+import { addContact } from 'redux/operation';
+import { selectContact } from 'redux/selectors';
 export function ContactForm() {
   const dispatch = useDispatch();
-  const contactsValue = useSelector(getContactsItems);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState,
-  } = useForm({
+  const contactsValue = useSelector(selectContact);
+  const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: {
       name: '',
       number: '',
     },
     mode: 'onTouched',
   });
-  useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset();
-    }
-  }, [formState.isSubmitSuccessful, reset]);
 
   const submitForm = data => {
+    const { name, number } = data;
     const loverName = data.name.toLowerCase();
-    if (contactsValue.find(item => item.name.toLowerCase() === loverName))
-      return console.log('this name already exists');
-    dispatch(addContact(data));
+    if (contactsValue.find(item => item.name.toLowerCase() === loverName)) {
+      console.log('this name already exists');
+    } else dispatch(addContact({ name, Number: number }));
+
+    reset();
   };
 
   return (
