@@ -7,7 +7,7 @@ import { selectContact } from 'redux/selectors';
 export function ContactForm() {
   const dispatch = useDispatch();
   const contactsValue = useSelector(selectContact);
-  const { register, handleSubmit, reset, formState } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       name: '',
       number: '',
